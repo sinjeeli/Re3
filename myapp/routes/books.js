@@ -15,6 +15,17 @@ router.get('/', async (req, res, next) => {
 router.get('/new', (req, res, next) => {
   res.render('new-book', { errors: null });
 });
+//
+
+
+
+
+
+
+
+
+
+
 
 // POST /books/new - Posts a new book to the database
 router.post('/new', async (req, res, next) => {
