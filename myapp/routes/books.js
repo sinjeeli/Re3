@@ -36,11 +36,21 @@ router.post('/new', async (req, res, next) => {
       year,
     });
 
-    // Redirect the user to the home page (e.g., /books)
+    // Redirect to /books route after successful creation
     res.redirect('/books');
-  } catch (error) {
-    console.error('Error creating new book:', error);
-    res.status(500).json({ error: 'Internal server error.' });
+  } catch (err) {
+    if (err.name === "SequelizeValidationError") {
+      // If the error is a Sequelize validation error, render the form with error message(s) and data of invalid new book
+      const book = await Book.build(req.body);
+      return res.render("form-error", {
+        title: "Create New Book",
+        book,
+        errors: err.errors,
+      });
+    } else {
+      // Throw other errors that will be caught in the error handling middleware
+      return next(err);
+    }
   }
 });
 
