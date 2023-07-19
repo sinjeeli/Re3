@@ -33,6 +33,75 @@ router.get('/:id', async (req, res, next) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
+//
+// POST /books/:id/update - Updates a book in the database
+router.post('/:id/update', async (req, res, next) => {
+  try {
+    const bookId = req.params.id;
+    const { title, author, genre, year } = req.body;
+
+    // Find the book to be updated in the database
+    const book = await Book.findByPk(bookId);
+
+    if (!book) {
+      // If the book with the provided id is not found, handle the error accordingly
+      return res.status(404).render('error', { message: 'Book not found.' });
+    }
+
+    // Update the book's details
+    book.title = title;
+    book.author = author;
+    book.genre = genre;
+    book.year = year;
+
+    // Save the updated book to the database
+    await book.save();
+
+    // Redirect to the book detail page after the update is successful
+    res.redirect('/books');
+  } catch (error) {
+    console.error('Error updating book:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// POST /books/:id/delete - Deletes a book from the database
+router.post('/:id/delete', async (req, res, next) => {
+  try {
+    const bookId = req.params.id;
+
+    // Find the book to be deleted in the database
+    const book = await Book.findByPk(bookId);
+
+    if (!book) {
+      // If the book with the provided id is not found, handle the error accordingly
+      return res.status(404).render('error', { message: 'Book not found.' });
+    }
+
+    // Delete the book from the database
+    await book.destroy();
+
+    // Redirect to the books listing page after the deletion is successful
+    res.redirect('/books');
+  } catch (error) {
+    console.error('Error deleting book:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -91,5 +160,10 @@ router.post('/new', async (req, res, next) => {
     }
   }
 });
+
+//
+
+
+
 
 module.exports = router;
