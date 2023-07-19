@@ -128,7 +128,7 @@ router.post('/new', async (req, res, next) => {
       }
 
       // Render the form with error message(s) and data of invalid new book
-      return res.render('new-book', {
+      return res.render('form-error', {
         title: 'Create New Book',
         errors: errors,
         book: { title, author, genre, year }, // Pass the form data back to the view to fill the inputs

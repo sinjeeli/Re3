@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   form(method="post" action=action)
-    h2.error Missing information!
+    h2.error Missing Information!
     ul.error
       each error in errors
         li= error.message
