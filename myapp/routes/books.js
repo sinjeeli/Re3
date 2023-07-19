@@ -5,7 +5,7 @@ const { Book } = require('../models');
 router.get('/', async (req, res, next) => {
   try {
     const books = await Book.findAll();
-    res.render('layout', { books });
+    res.render('index', { books });
   } catch (error) {
     console.error('Error fetching books:', error);
     res.status(500).json({ error: 'Internal server error.' });

@@ -1,13 +1,8 @@
-doctype html
-html
+extends layout
 
-  head
-    title Page Not Found
-    link(rel="stylesheet" href="/stylesheets/style.css")
-
-  body
-    h1 Page Not Found
-    p Sorry! We couldn't find the page you were looking for.
-    br
-    p
-      a.button(href="/books") Home
+block content
+  h1 Page Not Found
+  p Sorry! We couldn't find the page you were looking for.
+  br
+  p
+    a.button(href="/books") Home
