@@ -5,7 +5,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     h1 Update Book
-    form(method='post', action=`/books/${book.id}/update`)
+    form(method='post', action=`/books/${book.id}/update`, onsubmit="return confirm('Do you really want to update this book?');")
       p
         label(for='title') Title
       input(name='title', type='text', id='title', value=book.title)
