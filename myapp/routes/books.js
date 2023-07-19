@@ -16,7 +16,23 @@ router.get('/new', (req, res, next) => {
   res.render('new-book', { errors: null });
 });
 //
+// GET /books/:id - Show book detail form
+router.get('/:id', async (req, res, next) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findByPk(bookId);
 
+    if (!book) {
+      // If the book with the provided id is not found, handle the error accordingly
+      return res.status(404).render('error', { message: 'Book not found.' });
+    }
+
+    res.render('update-book', { book }); // Pass the book data to the Pug template
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
 
 
 
