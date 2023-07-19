@@ -6,7 +6,7 @@ const { Book } = require('../models');
 router.get('/', async (req, res, next) => {
   try {
     const books = await Book.findAll();
-    res.render('layout', { books }); // Use the 'layout.pug' template
+    res.render('layout', { books });
   } catch (error) {
     console.error('Error fetching books:', error);
     res.status(500).json({ error: 'Internal server error.' });
@@ -14,14 +14,14 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/new', (req, res, next) => {
-  res.render('new-book', { errors: null });// Assuming you have a Pug template named 'create_book'
+  res.render('new-book', { error: null });
 });
-//
+
 // POST /books/new - Posts a new book to the database
 router.post('/new', async (req, res, next) => {
   try {
     const { title, author, genre, year } = req.body;
-    
+
     // Check if any required field is missing
     if (!title || !author || !genre || !year) {
       // If any required field is missing, render the new-book.pug template with an error message
