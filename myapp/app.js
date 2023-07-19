@@ -57,8 +57,12 @@ app.use((err, req, res, next) => {
   // Log the error to the console
   console.error(`Error Status: ${err.status}, Message: ${err.message}`);
 
-  // Render the error template
-  res.status(err.status).render('error', { err });
+  // Render the appropriate error template
+  if (err.status === 404) {
+    res.status(404).render('page-not-found');
+  } else {
+    res.status(err.status).render('error', { err });
+  }
 });
 
 
