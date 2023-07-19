@@ -18,4 +18,12 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// GET /simulate-error route handler
+router.get('/simulate-error', (req, res, next) => {
+  const error = new Error('Intentional 500 Error');
+  next(error);
+});
+
+
+
 module.exports = router;

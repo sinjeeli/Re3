@@ -40,21 +40,24 @@ app.use('/users', usersRouter);
 
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// 404 handler
+app.use((req, res, next) => {
+  const error = new Error('Page Not Found');
+  error.status = 404;
+  next(error);
 });
-////////////////////////////////////////////
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Global error handler
+app.use((err, req, res, next) => {
+  err.status = err.status || 500;
+  err.message = err.message || 'Internal Server Error';
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // Log the error to the console
+  console.error(`Error Status: ${err.status}, Message: ${err.message}`);
+
+  // Render the error template
+  res.status(err.status).render('error', { err });
 });
+
 
 module.exports = app;
