@@ -1,4 +1,3 @@
-// routes/books.js
 const express = require('express');
 const router = express.Router();
 const { Book } = require('../models');
@@ -14,23 +13,16 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/new', (req, res, next) => {
-  res.render('new-book', { error: null });
+  res.render('new-book', { errors: null });
 });
 
-// POST /books/new - Posts a new book to the database
 // POST /books/new - Posts a new book to the database
 router.post('/new', async (req, res, next) => {
   try {
     const { title, author, genre, year } = req.body;
 
-    // Check if any required field is missing
-    if (!title || !author) {
-      // If any required field is missing, render the new-book.pug template with an error message
-      return res.render('new-book', { error: 'Title and Author are required fields.' });
-    }
-
     // Attempt to create the new book in the database
-    await Book.create({
+    const book = await Book.create({
       title,
       author,
       genre,
@@ -42,11 +34,10 @@ router.post('/new', async (req, res, next) => {
   } catch (err) {
     if (err.name === 'SequelizeValidationError') {
       // If the error is a Sequelize validation error, render the form with error message(s) and data of invalid new book
-      const book = await Book.build(req.body);
-      res.render('form-error', {
+      const errors = err.errors.map((error) => ({ message: error.message }));
+      res.render('new-book', {
         title: 'Create New Book',
-        book,
-        errors: err.errors, // Pass the validation errors
+        errors: errors, // Pass the validation errors
       });
     } else {
       // Throw other errors that will be caught in the error handling middleware
@@ -54,4 +45,5 @@ router.post('/new', async (req, res, next) => {
     }
   }
 });
+
 module.exports = router;
