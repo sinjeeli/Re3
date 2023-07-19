@@ -21,6 +21,24 @@ router.post('/new', async (req, res, next) => {
   try {
     const { title, author, genre, year } = req.body;
 
+    // Check if any required field is missing
+    if (!title || !author) {
+      const errors = [];
+      if (!title) {
+        errors.push({ message: 'Title is required.' });
+      }
+      if (!author) {
+        errors.push({ message: 'Author is required.' });
+      }
+
+      // Render the form with error message(s) and data of invalid new book
+      return res.render('new-book', {
+        title: 'Create New Book',
+        errors: errors,
+        book: { title, author, genre, year }, // Pass the form data back to the view to fill the inputs
+      });
+    }
+
     // Attempt to create the new book in the database
     const book = await Book.create({
       title,
@@ -38,6 +56,7 @@ router.post('/new', async (req, res, next) => {
       res.render('new-book', {
         title: 'Create New Book',
         errors: errors, // Pass the validation errors
+        book: { title, author, genre, year }, // Pass the form data back to the view to fill the inputs
       });
     } else {
       // Throw other errors that will be caught in the error handling middleware
