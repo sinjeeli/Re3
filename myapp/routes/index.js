@@ -1,9 +1,21 @@
 var express = require('express');
 var router = express.Router();
+const { Book } = require('../models');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+
+router.get('/', async (req, res, next) => {
+  try {
+    const books = await Book.findAll();
+    if (books.length === 0) {
+      res.json({ message: 'No books found.' });
+    } else {
+      console.log(books);
+      res.json(books);
+    }
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
 
 module.exports = router;
