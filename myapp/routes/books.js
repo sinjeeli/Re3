@@ -47,6 +47,24 @@ router.post('/:id/update', async (req, res, next) => {
       // If the book with the provided id is not found, handle the error accordingly
       return res.status(404).render('error', { message: 'Book not found.' });
     }
+    ////////////////////////////////////////////////
+    // Check if any required field is missing
+    if (!title || !author) {
+      const errors = [];
+      if (!title) {
+        errors.push({ message: 'Title is required.' });
+      }
+      if (!author) {
+        errors.push({ message: 'Author is required.' });
+      }
+
+      // Render the form with error message(s) and existing book data
+      return res.render('update-book', {
+        book,
+        errors,
+      });
+    }
+
 
     // Update the book's details
     book.title = title;
