@@ -27,12 +27,14 @@ router.get('/:id', async (req, res, next) => {
       return res.status(404).render('error', { message: 'Book not found.' });
     }
 
-    res.render('update-book', { book, errors: [] }); // Pass an empty array for errors
+    // Pass an empty array for errors if there are no errors
+    res.render('update-book', { book, errors: [] });
   } catch (error) {
     console.error('Error fetching book:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
+
 
 //// POST /books/:id/update - Updates a book in the database
 router.post('/:id/update', async (req, res, next) => {
