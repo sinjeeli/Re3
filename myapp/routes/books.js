@@ -27,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
       return res.status(404).render('error', { message: 'Book not found.' });
     }
 
-    res.render('update-book', { book }); // Pass the book data to the Pug template
+    res.render('update-book', { book, errors: [] }); // Pass the book data to the Pug template
   } catch (error) {
     console.error('Error fetching book:', error);
     res.status(500).json({ error: 'Internal server error.' });
@@ -47,15 +47,15 @@ router.post('/:id/update', async (req, res, next) => {
       // If the book with the provided id is not found, handle the error accordingly
       return res.status(404).render('error', { message: 'Book not found.' });
     }
-    ////////////////////////////////////////////////
+
     // Check if any required field is missing
     if (!title || !author) {
       const errors = [];
       if (!title) {
-        errors.push({ message: 'Title is required.' });
+        errors.push({ param: 'title', msg: 'Title is required.' });
       }
       if (!author) {
-        errors.push({ message: 'Author is required.' });
+        errors.push({ param: 'author', msg: 'Author is required.' });
       }
 
       // Render the form with error message(s) and existing book data
@@ -64,7 +64,6 @@ router.post('/:id/update', async (req, res, next) => {
         errors,
       });
     }
-
 
     // Update the book's details
     book.title = title;

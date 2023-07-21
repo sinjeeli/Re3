@@ -3,6 +3,11 @@ body {
   font: 18px "Garamond", serif;
 }
 
+
+.error-message {
+  color: red;
+}
+
 a {
   color: #019875;
   text-decoration: none;
