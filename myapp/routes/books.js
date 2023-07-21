@@ -16,7 +16,7 @@ router.get('/new', (req, res, next) => {
   res.render('new-book', { errors: null });
 });
 //
-// GET /books/:id - Show book detail form
+// GET /books/:id - Show book detail form// GET /books/:id - Show book detail form
 router.get('/:id', async (req, res, next) => {
   try {
     const bookId = req.params.id;
@@ -27,14 +27,14 @@ router.get('/:id', async (req, res, next) => {
       return res.status(404).render('error', { message: 'Book not found.' });
     }
 
-    res.render('update-book', { book, errors: [] }); // Pass the book data to the Pug template
+    res.render('update-book', { book, errors: [] }); // Pass an empty array for errors
   } catch (error) {
     console.error('Error fetching book:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
-//
-// POST /books/:id/update - Updates a book in the database
+
+//// POST /books/:id/update - Updates a book in the database
 router.post('/:id/update', async (req, res, next) => {
   try {
     const bookId = req.params.id;
